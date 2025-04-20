@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-undefined.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"wzhgeek.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Git简介 首先了解一个概念:版本控制,简单来说就是如果你做文案工作，每次提交之后，你的领导会让你修改，一篇稿子可能修改十几次，但是最后定稿的很可能不是最新修改的那一稿，所以就需要有个版本控制的方法，可以回溯到你所修改的任何一版，并且可以拿出来使用。 目前来说，版本控制主要分为：集中式版本控制（Centralized Version Control Systems，简称 CVCS）和分布式版本">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git操作与仓库创建">
+<meta property="og:url" content="https://wzhgeek.github.io/2022/01/05/Git/index.html">
+<meta property="og:site_name" content="王梓涵的Blog">
+<meta property="og:description" content="Git简介 首先了解一个概念:版本控制,简单来说就是如果你做文案工作，每次提交之后，你的领导会让你修改，一篇稿子可能修改十几次，但是最后定稿的很可能不是最新修改的那一稿，所以就需要有个版本控制的方法，可以回溯到你所修改的任何一版，并且可以拿出来使用。 目前来说，版本控制主要分为：集中式版本控制（Centralized Version Control Systems，简称 CVCS）和分布式版本">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wzhgeek.github.io/2022/01/05/Git/1.jpg">
+<meta property="og:image" content="https://wzhgeek.github.io/2022/01/05/Git/2.png">
+<meta property="og:image" content="https://wzhgeek.github.io/2022/01/05/Git/3.png">
+<meta property="og:image" content="https://wzhgeek.github.io/2022/01/05/Git/4.png">
+<meta property="article:published_time" content="2022-01-05T09:08:34.000Z">
+<meta property="article:modified_time" content="2022-04-01T15:00:30.000Z">
+<meta property="article:author" content="王梓涵">
+<meta property="article:tag" content="Github">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wzhgeek.github.io/2022/01/05/Git/1.jpg">
+
+
+<link rel="canonical" href="https://wzhgeek.github.io/2022/01/05/Git/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://wzhgeek.github.io/2022/01/05/Git/","path":"2022/01/05/Git/","title":"Git操作与仓库创建"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Git操作与仓库创建 | 王梓涵的Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">王梓涵的Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-博客主页"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>博客主页</a></li>
+        <li class="menu-item menu-item-文章归档"><a href="/archives" rel="section"><i class="fa fa-archive fa-fw"></i>文章归档</a></li>
+        <li class="menu-item menu-item-个人简历"><a href="/%E4%B8%AA%E4%BA%BA%E7%AE%80%E5%8E%86/" rel="section"><i class="fa fa-address-card fa-fw"></i>个人简历</a></li>
+        <li class="menu-item menu-item-标签"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-关于"><a href="/about/" rel="section"><i class="fa fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-友链"><a href="/links" rel="section"><i class="fa fa-eye fa-fw"></i>友链</a></li>
+        <li class="menu-item menu-item-杂记"><a href="/test1" rel="section"><i class="fa fa-cube fa-fw"></i>杂记</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          目录在此
+        </li>
+        <li class="sidebar-nav-overview">
+          博客情况
+        </li>
+      </ul>
+    <div id="music163player">
+      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=86 src="//music.163.com/outchain/player?type=2&id=38358214&auto=0&height=66">
+      </iframe>
+    </div>
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#git%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">Git简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#git%E7%9A%84%E9%80%9A%E7%94%A8%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%A6%82%E4%B8%8B%E5%9B%BE"><span class="nav-number">1.1.</span> <span class="nav-text">git的通用操作流程如下图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git%E4%B8%8B%E8%BD%BD%E4%B8%8E%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">Git下载与环境配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git%E9%85%8D%E7%BD%AE%E5%91%BD%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">git配置命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF"><span class="nav-number">3.1.</span> <span class="nav-text">查询配置信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8git%E9%85%8D%E7%BD%AE%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF"><span class="nav-number">3.2.</span> <span class="nav-text">第一次使用git，配置用户信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E9%85%8D%E7%BD%AE"><span class="nav-number">3.3.</span> <span class="nav-text">其他配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E5%8C%BA%E4%B8%8A%E7%9A%84%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4"><span class="nav-number">4.</span> <span class="nav-text">工作区上的操作命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%8A%B6%E6%80%81"><span class="nav-number">4.1.</span> <span class="nav-text">查看文件状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%BB%E9%99%A4%E6%96%87%E4%BB%B6"><span class="nav-number">4.2.</span> <span class="nav-text">移除文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4"><span class="nav-number">4.3.</span> <span class="nav-text">提交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9A%82%E5%AD%98%E5%8C%BA%E4%B8%8A%E7%9A%84%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4"><span class="nav-number">4.4.</span> <span class="nav-text">暂存区上的操作命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4git%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E5%9C%B0%E5%9D%80"><span class="nav-number">4.5.</span> <span class="nav-text">删除git远程仓库地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86"><span class="nav-number">4.6.</span> <span class="nav-text">分支管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%BD%E7%95%A5%E6%96%87%E4%BB%B6.gitignore"><span class="nav-number">4.7.</span> <span class="nav-text">忽略文件.gitignore</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%8E%86%E5%8F%B2%E5%91%BD%E4%BB%A4"><span class="nav-number">4.8.</span> <span class="nav-text">查看历史命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E4%BB%93%E5%BA%93%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="nav-number">4.9.</span> <span class="nav-text">完整创建一个仓库的流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%B8%B8%E7%94%A8%E7%9A%84git%E5%91%BD%E4%BB%A4"><span class="nav-number">4.10.</span> <span class="nav-text">最常用的Git命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">5.</span> <span class="nav-text">结语</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="王梓涵"
+      src="/images/favicon-32x32-next.png">
+  <p class="site-author-name" itemprop="name">王梓涵</p>
+  <div class="site-description" itemprop="description">一个日常记录学习的blog……</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangzihan20" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangzihan20" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:2018952617@qq.com" title="E-Mail → mailto:2018952617@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://plus.google.com/" title="Google → https:&#x2F;&#x2F;plus.google.com" rel="noopener" target="_blank"><i class="fab fa-google fa-fw"></i>Google</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/CODE_WangZIli?spm=1000.2115.3001.5343" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;CODE_WangZIli?spm&#x3D;1000.2115.3001.5343" rel="noopener" target="_blank"><i class="fa fa-anchor fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wzhgeek.github.io/2022/01/05/Git/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/favicon-32x32-next.png">
+      <meta itemprop="name" content="王梓涵">
+      <meta itemprop="description" content="一个日常记录学习的blog……">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="王梓涵的Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Git操作与仓库创建
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-01-05 17:08:34" itemprop="dateCreated datePublished" datetime="2022-01-05T17:08:34+08:00">2022-01-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-01 23:00:30" itemprop="dateModified" datetime="2022-04-01T23:00:30+08:00">2022-04-01</time>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Valine：</span>
+  
+    <a title="valine" href="/2022/01/05/Git/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/01/05/Git/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.2k</span>
+    </span>
+    <span class="post-meta-item" title="估计阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">估计阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="git简介">Git简介</h2>
+<p>首先了解一个概念:<a target="_blank" rel="noopener" href="https://baike.so.com/doc/5903265-6116166.html">版本控制</a>,简单来说就是如果你做文案工作，每次提交之后，你的领导会让你修改，一篇稿子可能修改十几次，但是最后定稿的很可能不是最新修改的那一稿，所以就需要有个版本控制的方法，可以回溯到你所修改的任何一版，并且可以拿出来使用。</p>
+<p>目前来说，版本控制主要分为：<strong>集中式版本控制</strong>（Centralized Version Control Systems，<strong>简称 CVCS</strong>）和<strong>分布式版本控制</strong>，（Distributed Version Control System，<strong>简称 DVCS</strong>）。</p>
+<p>集中式版本控制类似于中央集权，多个终端与一个服务器进行交互，缺点明显，如果服务器损毁，则所有终端都不能拿到最新版本。</p>
+<p>分布式系统（distributed system）是建立在网络之上的软件系统。正是因为软件的特性，所以分布式系统具有高度的内聚性和透明性。因此，网络和分布式系统之间的区别更多的在于高层软件（特别是操作系统），而不是硬件。</p>
+<p>下图就是<strong>分布式版本控制系统的图解：</strong> <img src="/2022/01/05/Git/1.jpg" class></p>
+<p>想更多的了解这两者的优缺点，<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_30426065/article/details/99194166?utm_medium=distribute.pc_aggpage_search_result.none-task-blog-2~aggregatepage~first_rank_ecpm_v1~rank_v31_ecpm-1-99194166.pc_agg_new_rank&amp;utm_term=%E9%9B%86%E4%B8%AD%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9&amp;spm=1000.2123.3001.4430">请点击这里</a> <span id="more"></span> CVCS的代表主要有<strong>CVS、SVN</strong> 以及<strong>Perforce</strong>等；</p>
+<p>DVCS主要有 <strong>Git、Mercurial、Bazaar</strong> 以及 <strong>Darcs</strong> 等。我们平时比较常用的就是SVN和Git。</p>
+<p>Git是世界上目前最先进的版本控制系统，Git的开发者也是Linux操作系统的创始人：<a target="_blank" rel="noopener" href="https://baike.so.com/doc/5340366-5575809.html">“林纳斯·本纳第克特·托瓦兹”</a>，他开发这个Git只用了短短两周，而关于这个Git开发的故事，也有一段奇闻，想了解的请点击<a target="_blank" rel="noopener" href="https://blog.csdn.net/u014756827/article/details/105481523?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522164137740416780357237868%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&amp;request_id=164137740416780357237868&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~baidu_landing_v2~default-3-105481523.pc_search_insert_es_download_v2&amp;utm_term=Git%E6%80%8E%E4%B9%88%E6%9D%A5%E7%9A%84&amp;spm=1018.2226.3001.4187">深入 git 必看：git 是如何被创造的？讲述 git 的诞生史、核心思想及其父：Linus Torvalds</a></p>
+<p>如想了解SVN的简单使用，可以查看：<a target="_blank" rel="noopener" href="https://blog.csdn.net/pzm1993/article/details/78517300">SVN的介绍与使用流程</a>。</p>
+<p>接下就开始介绍Git的简单操作使用。以下主要对官方文档以及其他文档的总结，会使用git作为版本控制工具来完成团队协作。因此，对基本的git操作指令进行总结是十分有必要的，本文会对基本的理论与命令做归纳总结。</p>
+<h3 id="git的通用操作流程如下图">git的通用操作流程如下图</h3>
+<img src="/2022/01/05/Git/2.png" class>
+<p>主要涉及到四个关键点：</p>
+<ul>
+<li>工作区：本地电脑存放项目文件的地方，比如learnGitProject文件夹；</li>
+<li>暂存区（Index/Stage）：在使用git管理项目文件的时候，其本地的项目文件会多出一个.git的文件夹，将这个.git文件夹称之为版本库。其中.git文件夹中包含了两个部分，一个是暂存区（Index或者Stage）,顾名思义就是暂时存放文件的地方，通常使用add命令将工作区的文件添加到暂存区里；</li>
+<li>本地仓库：.git文件夹里还包括git自动创建的master分支，并且将HEAD指针指向master分支。使用commit命令可以将暂存区中的文件添加到本地仓库中；</li>
+<li>远程仓库：不是在本地仓库中，项目代码在远程git服务器上，比如项目放在github上，就是一个远程仓库，通常使用clone命令将远程仓库拷贝到本地仓库中，开发后推送到远程仓库中即可；</li>
+</ul>
+<p>因此，经过这样的分析，git命令可以分为这样的逻辑进行理解和记忆：</p>
+<p>1.git管理配置的命令；</p>
+<p>2.几个核心存储区的交互命令：</p>
+<p>3.工作区与暂存区的交互；</p>
+<p>4.暂存区与本地仓库（分支）上的交互；</p>
+<p>5.本地仓库与远程仓库的交互。</p>
+<h2 id="git下载与环境配置">Git下载与环境配置</h2>
+<p>Git下载安装以及环境配置请参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/huangqqdy/article/details/83032408?utm_source=app&amp;app_version=4.18.0&amp;code=app_1562916241&amp;uLinkId=usr1mkqgl919blen">Git下载、安装与环境配置</a>，这里不再赘述。</p>
+<h2 id="git配置命令">git配置命令</h2>
+<p>Git操作需要在一个文件夹下生成，安装完成之后，在桌面或者文件夹下，点击右键，出现下图：</p>
+<img src="/2022/01/05/Git/3.png" class>
+<p><strong>Git GUI 是图像化显示，与Git Bash功能一样</strong> <strong>Git Bash常用此方式创建一个仓库，点击打开Git控制台</strong></p>
+<p>以下所有命令均在Git控制台上运行：如下图 <img src="/2022/01/05/Git/4.png" class></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$表示提示输入</span><br></pre></td></tr></table></figure>
+<h3 id="查询配置信息">查询配置信息</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1.列出当前配置：git config --list;</span><br><span class="line">2.列出repository配置：git config --<span class="built_in">local</span> --list;</span><br><span class="line">3.列出全局配置：git config --global --list;</span><br><span class="line">4.列出系统配置：git config --system --list;</span><br></pre></td></tr></table></figure>
+<h3 id="第一次使用git配置用户信息">第一次使用git，配置用户信息</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1.配置用户名：git config --global user.name <span class="string">&quot;your name&quot;</span>;</span><br><span class="line">2.配置用户邮箱：git config --global user.email <span class="string">&quot;youremail@github.com&quot;</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="其他配置">其他配置</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.配置解决冲突时使用哪种差异分析工具，比如要使用vimdiff：git config --global merge.tool vimdiff;</span><br><span class="line">2.配置git命令输出为彩色的：git config --global color.ui auto;</span><br><span class="line">3.配置git使用的文本编辑器：git config --global core.editor vi;</span><br></pre></td></tr></table></figure>
+<h2 id="工作区上的操作命令">工作区上的操作命令</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">新建仓库</span><br><span class="line"></span><br><span class="line">1.将工作区中的项目文件使用git进行管理，即创建一个新的本地仓库：git init；(初始化)</span><br><span class="line">2.从远程git仓库复制项目：git <span class="built_in">clone</span> &lt;url&gt;，如：git <span class="built_in">clone</span> git://github.com/wasd/example.git;、</span><br><span class="line">3.克隆项目时如果想定义新的项目名，可以在<span class="built_in">clone</span>命令后指定新的项目名：git <span class="built_in">clone</span> git://github.com/wasd/example.git mygit；</span><br></pre></td></tr></table></figure>
+<h3 id="查看文件状态">查看文件状态</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git status</span><br><span class="line"></span><br><span class="line">显示工作目录的状态，不带参数执行，输出内容很详细。并且根据文件是否暂存，会预示下一步的指令操作。</span><br><span class="line"></span><br><span class="line">如果想简洁一点，那么加个--short （-s）参数：git status -s</span><br></pre></td></tr></table></figure>
+<h3 id="移除文件">移除文件</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ git rm </span><br><span class="line"></span><br><span class="line">从git中将已跟踪的文件从工作目录、暂存区移除，注意是已跟踪的。如果该文件又是已修改的，可以使用参数 -f 强制删除。</span><br><span class="line"></span><br><span class="line">如果移除未跟踪的文件，或者只在工作目录移除，在暂存区继续保留，那么可以执行：</span><br></pre></td></tr></table></figure>
+<h3 id="提交">提交</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.提交工作区所有文件到暂存区：git add .(<span class="string">&#x27;.&#x27;</span>的前面还有个空格！)</span><br><span class="line">2.提交工作区中指定文件到暂存区：git add &lt;file1&gt; &lt;file2&gt; ...;</span><br><span class="line">3.提交工作区中某个文件夹中所有文件到暂存区：git add [dir];</span><br></pre></td></tr></table></figure>
+<h3 id="暂存区上的操作命令">暂存区上的操作命令</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">提交文件到版本库</span><br><span class="line"></span><br><span class="line">1.将暂存区中的文件提交到本地仓库中，即打上新版本：git commit -m <span class="string">&quot;commit_info&quot;</span>;</span><br><span class="line">2.将所有已经使用git管理过的文件暂存后一并提交，跳过add到暂存区的过程：git commit -a -m <span class="string">&quot;commit_info&quot;</span>;</span><br><span class="line">3.提交文件时，发现漏掉几个文件，或者注释写错了，可以撤销上一次提交：git commit --amend;</span><br><span class="line">4.修改commit信息git commit --ammend,修改，保存;</span><br></pre></td></tr></table></figure>
+<h3 id="删除git远程仓库地址">删除git远程仓库地址</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git remote -v //查看</span><br><span class="line">git remote rm origin</span><br></pre></td></tr></table></figure>
+<h3 id="分支管理">分支管理</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">1.创建分支：git branch &lt;branch-name&gt;，如git branch testing；</span><br><span class="line">2.从当前所处的分支切换到其他分支：git checkout &lt;branch-name&gt;，如git checkout testing；</span><br><span class="line">3.新建并切换到新建分支上：git checkout -b &lt;branch-name&gt;;</span><br><span class="line">4.删除分支：git branch -d &lt;branch-name&gt;；</span><br><span class="line">5.将当前分支与指定分支进行合并：git merge &lt;branch-name&gt;;</span><br><span class="line">6.显示本地仓库的所有分支：git branch;</span><br><span class="line">7.查看各个分支最后一个提交对象的信息：git branch -v;</span><br><span class="line">8.查看哪些分支已经合并到当前分支：git branch --merged;</span><br><span class="line">9.查看当前哪些分支还没有合并到当前分支：git branch --no-merged;</span><br><span class="line">10.把远程分支合并到当前分支：git merge &lt;remote-name&gt;/&lt;branch-name&gt;，如git merge origin/serverfix；如果是单线的历史分支不存在任何需要解决的分歧，只是简单的将HEAD指针前移，所以这种合并过程可以称为快进（Fast forward），而如果是历史分支是分叉的，会以当前分叉的两个分支作为两个祖先，创建新的提交对象；如果在合并分支时，遇到合并冲突需要人工解决后，再才能提交；</span><br><span class="line">11.在远程分支的基础上创建新的本地分支：git checkout -b &lt;branch-name&gt; &lt;remote-name&gt;/&lt;branch-name&gt;，如git checkout -b serverfix origin/serverfix;</span><br><span class="line">12.从远程分支checkout出来的本地分支，称之为跟踪分支。在跟踪分支上向远程分支上推送内容：git push。该命令会自动判断应该向远程仓库中的哪个分支推送数据；在跟踪分支上合并远程分支：git pull；</span><br><span class="line">13.将一个分支里提交的改变移到基底分支上重放一遍：git rebase &lt;rebase-branch&gt; &lt;branch-name&gt;，如git rebase master server，将特性分支server提交的改变在基底分支master上重演一遍；使用rebase操作最大的好处是像在单个分支上操作的，提交的修改历史也是一根线；如果想把基于一个特性分支上的另一个特性分支变基到其他分支上，可以使用--onto操作：git rebase --onto &lt;rebase-branch&gt; &lt;feature branch&gt; &lt;sub-feature-branch&gt;，如git rebase --onto master server client；使用rebase操作应该遵循的原则是：一旦分支中的提交对象发布到公共仓库，就千万不要对该分支进行rebase操作；</span><br></pre></td></tr></table></figure>
+<h3 id="忽略文件.gitignore">忽略文件.gitignore</h3>
+<p>一般我们总会有些文件无需纳入 Git 的管理，也不希望它们总出现在未跟踪文件列表。通常都是些自动生成的文件，比如日志文件，或者编译过程中创建的临时文件等。我们可以创建一个名为 .gitignore 的文件，列出要忽略的文件模式。如下例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 此为注释 – 将被 Git 忽略</span></span><br><span class="line"><span class="comment"># 忽略所有 .a 结尾的文件</span></span><br><span class="line">*.a</span><br><span class="line"><span class="comment"># 但 lib.a 除外</span></span><br><span class="line">!lib.a</span><br><span class="line"><span class="comment"># 仅仅忽略项目根目录下的 TODO 文件，不包括 subdir/TODO</span></span><br><span class="line">/TODO</span><br><span class="line"><span class="comment"># 忽略 build/ 目录下的所有文件</span></span><br><span class="line">build/</span><br><span class="line"><span class="comment"># 会忽略 doc/notes.txt 但不包括 doc/server/arch.txt</span></span><br><span class="line">doc/*.txt</span><br><span class="line"><span class="comment"># 忽略 doc/ 目录下所有扩展名为 txt 的文件</span></span><br><span class="line">doc/**/*.txt</span><br></pre></td></tr></table></figure>
+<h3 id="查看历史命令">查看历史命令</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ histroy</span><br><span class="line">该命令可以按顺序查看你之前输入过的所有的git命令</span><br></pre></td></tr></table></figure>
+<h3 id="完整创建一个仓库的流程">完整创建一个仓库的流程</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> mall-client</span><br><span class="line">git init</span><br><span class="line">touch README.md</span><br><span class="line">git add README.md</span><br><span class="line">git commit -m <span class="string">&quot;first commit&quot;</span></span><br><span class="line">git remote add origin https://gitee.com/onewj830/mall-client.git</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+<h3 id="最常用的git命令">最常用的Git命令</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">git init        \\初始化</span><br><span class="line">git add .       \\添加到缓存区</span><br><span class="line">git commit      \\提交到本地仓库</span><br><span class="line">git push        \\复制到远端仓库</span><br><span class="line">git <span class="built_in">clone</span> &lt;url&gt; \\克隆库</span><br><span class="line">git status      \\查看当前状态</span><br><span class="line"><span class="built_in">history</span>         \\查看历史命令</span><br><span class="line">git branch &lt;branch-name&gt;    \\创建分支</span><br><span class="line">git branch -d &lt;branch-name&gt; \\删除分支</span><br></pre></td></tr></table></figure>
+<h2 id="结语">结语</h2>
+<p>在学习中总结，也有很多不足的地方，总结不是很到位，望指出。</p>
+<p>记得很早开始开始接触的时候，也是很懵，看着一堆英文的界面啥也不懂，虽然我看的懂部分英文解释说明，但是对这个系统的工作流程与工作方式是一知半解的，分布式版本控制系统我觉得有时候也像是区块链的思想，我感觉我很有动力去学这些东西，特别是写自己的博客，我觉得很开心，甚至再探索的时候时间不知不觉就来到了凌晨，我非要解决了眼下这个问题才肯休息……从入门到现在，一点心得就是，初学不需明白那些非常高深的理论知识，只要知道git是个版本控制器就行，知道怎么创建仓库，怎么利用别人的仓库的开源项目提升自己，和SVN的区别也不需特别的去理会，一边学习一边应用，效率才是最高的。使用过，才知道他是个什么，以前那些原理也就恍然大悟了，可以举一反三！即初学少研究，多实践，最后事倍功半！</p>
+
+    </div>
+
+    
+    
+    
+
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/true" alt="王梓涵 enable">
+        <span>enable</span>
+      </div>
+      <div>
+        <img src="/%E5%9D%9A%E6%8C%81%E5%8E%9F%E5%88%9B%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB~%E6%82%A8%E7%9A%84%E6%94%AF%E6%8C%81%E5%B0%86%E9%BC%93%E5%8A%B1%E6%88%91%E7%BB%A7%E7%BB%AD%E5%88%9B%E4%BD%9C%EF%BC%81" alt="王梓涵 comment">
+        <span>comment</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>王梓涵
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://wzhgeek.github.io/2022/01/05/Git/" title="Git操作与仓库创建">https://wzhgeek.github.io/2022/01/05/Git/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+          <span class="icon">
+            <i class="fab fa-weixin"></i>
+          </span>
+
+          <span class="label">WeChat</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Github/" rel="tag"><i class="fa fa-tag"></i> Github</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/01/03/Github/" rel="prev" title="有关Github的介绍">
+                  <i class="fa fa-chevron-left"></i> 有关Github的介绍
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/01/05/mathrecord1/" rel="next" title="笔记|统计学习方法：感知机模型">
+                  笔记|统计学习方法：感知机模型 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="valine-comments"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王梓涵</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">168k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:33</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+
+<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"VmtlzmDMWxYSz8xQ3ycieFj9-gzGzoHsz","appKey":"2tty3gM3OtB9XmGCCpWjwzE6","serverURLs":"https://vmtlzmdm.lc-cn-n1-shared.com","placeholder":"请开始你的表演~","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":false,"comment_count":true,"recordIP":false,"enableQQ":true,"requiredFields":[],"valine":"https://cdn.jsdelivr.net/npm/valine@1.4.16/dist/Valine.min.js","emojiCDN":"https://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/","el":"#valine-comments","path":"/2022/01/05/Git/"}</script>
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.valine.el)
+    .then(() => NexT.utils.getScript(
+      'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
+      { condition: window.Valine }
+    ))
+    .then(() => {
+      new Valine(CONFIG.valine);
+    });
+});
+</script>
+
+  
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"live2d-widget-model-shizuku"},"display":{"position":"right","width":200,"height":500},"mobile":{"show":true},"log":false});</script></body>
+</html>
